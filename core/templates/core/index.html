@@ -1,0 +1,166 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+
+		<nav class="navbar navbar-expand-sm navbar-light">
+  <a href="/" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar2">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Home <span class="sr-only">Home</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><b>Movies</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Tv Series</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Dashboard</a>
+            </li>
+            
+        </ul>
+        
+        
+
+        <ul class="nav navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            	<li class="nav-item">
+                <a class="nav-link" href="{% url 'core:profiles' user.get_username %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Logout</a>
+            </li>
+          {% else %}
+            <li><a href="{% url 'login' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><button class="btn-primary" style="cursor:pointer;"> Log In</button> </a></li>
+            <li><a href="{% url 'register' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><button class="btn-primary" style="cursor:pointer;"> Sign up</button> </a></li>
+          {% endif %}
+
+    </ul>
+    </div>
+</nav>
+
+		<form method="POST">
+             {% csrf_token %}
+
+      <div class="wrap">
+       <div class="search">
+          <input type="text" class="searchTerm" name="search" placeholder="Search movies">
+          <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+         </button>
+       </div>
+    </div>
+    </form>
+
+    <br><br>
+
+
+	
+	{% if not movies %}
+
+
+	
+
+      
+
+			
+
+		<main role="main" style="background: #1e252b; height: 100%">
+   
+
+      <div class="album py-5 " >
+    <div class="container">
+       <h2 style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder; text-align: center; margin-bottom: 7px; "><p class="card-text">Upcomming Movies</p></h1>
+      <div class="row">
+
+
+        {% for movie in upcoming_movies|slice:"0:6" %}
+
+                <div class="col-md-2">
+                      <div class="card mb-4 shadow-sm">
+                        <a href="{% url 'core:details' movie.id  %}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+                        
+                                      
+                      
+                    </div>
+                </div>
+
+        {% endfor %}
+
+    </div>
+  </div>
+
+
+  <div class="album py-5 " >
+    <div class="container">
+    	 <h2 style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder; text-align: center; margin-bottom: 7px; "><p class="card-text">Popular This week </p></h1>
+      <div class="row">
+
+
+        {% for movie in popular_movies|slice:"0:6" %}
+
+                <div class="col-md-2">
+                      <div class="card mb-4 shadow-sm">
+                        <a href="{% url 'core:details' movie.id  %}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+                        
+                                      
+                      
+                    </div>
+                </div>
+
+        {% endfor %}
+
+    </div>
+  </div>
+
+
+
+</main>
+
+
+	{% endif %}
+
+
+	{% if movies %}
+
+
+	<main role="main">
+   
+
+  <div class="album py-5">
+    <div class="container">
+      <div class="row">
+
+        {% for movie in movies %}
+
+                <div class="col-md-2">
+                      <div class="card mb-4 shadow-sm">
+                        <a href="{% url 'core:details' movie.id  %}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="255" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+                        
+                                      
+                      
+                    </div>
+                </div>
+
+        {% endfor %}
+
+    </div>
+  </div>
+
+
+
+</main>
+
+{% endif %}
+
+
+{% endblock %}

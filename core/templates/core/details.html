@@ -1,0 +1,355 @@
+
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+	{% if movie %}
+	{% for movie in movie %}
+
+
+	
+
+	 <div class="hero-image" style="background-image: url({{ movie.backdrop_path }}); font-weight: bolder">
+	 	
+	 		<nav class="navbar navbar-expand-sm navbar-light" style="min-height: 50px;">
+ 		 <a href="{% url 'core:index' %}" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    
+		</nav>
+
+
+	 	<div class="hero-text">
+	 		<h1 style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder;"><p class="card-text" id="{{ movie.id}}">{{ movie.title }}</p></h1>
+
+				<small class="text-muted" style="color:white; font-weight: bolder">{% for crew in crew_details %}
+	
+							{% if  crew.job  == 'Director' %}
+							<h5 style="background: rgba(0, 0, 0, 0.45); padding: 4px 8px; color: white; margin: 0;">A film by {{ crew.name }}</h5>
+							{% endif %}
+							{% endfor %}
+				</small> <br>
+		</div>
+		  
+		</div> 
+
+
+
+	<main role='main' style="background-color: black">
+	<div class="album py-5 " >
+    <div class="container" >
+      <div class="row" >
+      	
+        
+
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm" >
+            <img class="bd-placeholder-img card-img-top " width="100%" height="400" style='cursor: pointer;' onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+            
+          </div>
+          <br>
+          {% if user.is_authenticated %}
+          <div class="container" >
+      		<div class="row" >
+      			<div class="col-sm-4">
+      				<center>
+      					{% if watched_this is True %}
+      						<a href="{% url 'removewatched' movie.id %}"  style="font-weight: lighter; text-decoration: none"> <i class="fa fa-eye" aria-hidden="true" style="font-size:37px; color: green" onMouseOver="this.style.color='lightgreen'" onMouseOut="this.style.color='green'" > </i>  <br><span style="color: white"> Watched</span> </a> 
+      					{% else %}
+				          	<a href="{% url 'addwatched' movie.id %}"  style="font-weight: lighter; text-decoration: none"> <i class="fa fa-eye" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'" > </i>  <br><span style="color: white"> Watch</span> </a> 
+      					{% endif %}
+
+          			</center>
+          		</div>
+          		<div class="col-sm-4">
+      				<center>
+      					{% if liked is True %}
+      						<a href="{% url 'removeliked' movie.id %}"> <i class="fa fa-heart" aria-hidden="true" style="font-size:37px; color: orange" onMouseOver="this.style.color='lightorange'" onMouseOut="this.style.color='orange'"> </i>  <br>  <span style="color: white"> Liked </span> </a> 
+      					{% else %}
+				          	<a href="{% url 'addliked' movie.id %}"> <i class="fa fa-heart" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> </i>  <br>  <span style="color: white"> Like </span> </a> 
+      					{% endif %}
+
+			    </center>
+          		</div>
+          		<div class="col-sm-4">
+      				<center>
+      					{% if watchlisted is True %}
+      						<a href="{% url 'removewatchlist' movie.id %}" > <i class="fa fa-clock" aria-hidden="true" style="font-size:37px; color: #0077b5" onMouseOver="this.style.color='lightblue'" onMouseOut="this.style.color='#0077b5'"> </i>  <br> <span style="color: white"> Watchlist </span> </a> 
+      					{% else %}
+
+				          	<a href="{% url 'addwatchlist' movie.id %}" > <i class="fa fa-clock" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> </i>  <br> <span style="color: white"> Watchlist </span> </a> 
+				        {% endif %}
+          			</center>
+          		</div>
+          	</div>
+          </div>
+           <br>
+           {% endif %}
+
+
+          	<a href="{{ movie.imdb_url}}">More details at  &nbsp <i class="fab fa-imdb" style="font-size:37px "></i> </a> <br> <br>
+          <a href="{{ video_details.trailer_url}}">Watch trailer at &nbsp <i class="fab fa-youtube" style="font-size:37px "></i> </a>  
+
+        </div>
+
+        <div class="col-md-8"  style="background-color: lightgrey">
+        	<div class="card-body">
+
+        		<div style="margin-left: 5%; margin-right: 5%; text-align: center">
+					{% if messages %}
+			          {% for message in messages %}
+
+			          <div class="alert alert-{{ message.tags }}">
+			              {{ message }}
+			          </div>
+
+			          {% endfor %}
+			          {% endif %}
+					</div>
+
+
+              <h3><p class="card-text" id="{{ movie.id}}" style="text-decoration: none; "><a href="{{ movie.movie_url }}">{{ movie.title }}</a></p></h3>
+              <div class="d-flex justify-content-between align-items-center">
+              	<small class="text-muted">{% for genre in genres %}
+	
+							{{ genre.genre }} | {% endfor %}
+							&nbsp &nbsp &nbsp
+							{{ movie.runtime }}m
+
+							{% for crew in crew_details %}
+							&nbsp 
+	
+							{% if  crew.job  == 'Director' %}
+							{{ crew.name }}
+							{% endif %}
+
+							{% endfor %}
+
+							
+
+							
+				</small> 
+
+				
+				
+              	
+              	
+                
+            
+              </div>
+
+              	<p>
+					<h5 class="text-muted" style="font-style: italic;">{{ movie.tagline }}</h5> <br>
+
+				</p>
+
+				<p style="margin-right: 10%">
+					{{ movie.overview }}
+				</p>
+
+				<br>
+				<!--
+				<h5 style="color: green; font-weight: lighter;">Cast</h5> <hr> 
+				 -->
+
+				<div class="tab" >
+					  <button style="color: green; font-weight: lighter;" class="tablinks" onclick="openCity(event, 'Cast')" id="defaultOpen">Cast</button>
+
+					  			
+
+					  <button style="color: green; font-weight: lighter;"  class="tablinks" onclick="openCity(event, 'Crew')">Crew</button>
+					  <button style="color: green; font-weight: lighter;"  class="tablinks" onclick="openCity(event, 'Details')">Details</button>
+					</div>
+				
+
+
+				<div class="row" style="margin-right: 10%"> <br>
+
+
+
+
+					
+
+					
+
+					<!-- Tab content -->
+					<div id="Cast" class="tabcontent">
+						{% for cast in cast_details|slice:"0:10" %}
+					  	<button class='movie-details' href="#" data-toggle="tooltip" title="{{ cast.character }}" style=" margin: margin: 0 1px 5px 0; background-color: #242c34; color: #7f8ea5; font-weight: lighter; cursor: pointer; padding: 3px ; box-shadow: inset 0 1px 0 hsla(0,0%,100%,.1);; text-decoration: none;" >{{ cast.name }} </button> 
+					  	{% endfor %}
+					  	<br><br>
+					  	<small class="text-muted ml-auto" style="margin-top: 25px;">
+					  	<a href="{{ movie.imdb_url  }}">
+					  	<span style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder; cursor: pointer; margin-top: 15px; text-decoration: none;">
+					  	 More details at IMDB 
+					  </span></a>
+					  </small>
+
+					</div>
+					<div id="Crew" class="tabcontent">
+						<div class="row">
+						{% for crew in crew_details|slice:"0:10" %}
+						<div class="col-sm-5">
+						{{ crew.job }}
+						</div>
+						<div class="col-sm-7">
+					  <button href="#" data-toggle="tooltip" title="{{ cast.character }}" style=" margin: margin: 0 1px 5px 0; background-color: #242c34; color: #7f8ea5; font-weight: lighter; cursor: pointer; padding: 3px 6px; box-shadow: inset 0 1px 0 hsla(0,0%,100%,.1);; text-decoration: none;">{{ crew.name }} </button>  </div> <br>
+
+					  {% endfor %}
+
+					  <br><br>
+					  	<small class="text-muted ml-auto" style="margin-top: 25px;">
+					  	<a href="{{ movie.imdb_url  }}">
+					  	<span style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder; cursor: pointer; margin-top: 15px; text-decoration: none;">
+					  	 More details at IMDB 
+					  </span></a>
+					  </small>
+					  
+
+					  </div>
+
+					</div>
+
+					<div id="Details" class="tabcontent">
+
+						<div class="row">
+
+							<div class="col-sm-5">
+								Director
+							</div>
+								{% for director in directors %}{{ director.name }}  
+
+								{% endfor %}
+								</div>
+								<br>
+								
+								
+
+						
+					  
+
+					  	<div class="row">
+
+							<div class="col-sm-5">
+								Producer
+							</div>
+							
+							<div class="col-sm-7">
+								{% for producer in producers %}
+								{{ producer.name }},   
+
+								{% endfor %}
+								</div>
+
+
+								
+							</div>
+
+
+							<br>
+						<div class="row">
+						    <div class="col-sm-5">
+								Release Date
+							</div>
+							<div class="col-md-7">
+								{{ movie.release_date }}
+							</div>
+						</div>
+
+
+							<br>
+
+						<div class="row">
+
+							<div class="col-sm-5">
+								Runtime
+							</div>
+							<div class="col-md-7">
+								{{ movie.runtime }}m
+								 </div>
+
+
+
+						</div>
+
+
+
+						<br>
+						<div class="row">
+						    <div class="col-sm-5">
+								Budget
+							</div>
+							<div class="col-md-7">
+								{{ movie.budget }}
+							</div>
+						</div>
+
+						<br>
+						<div class="row">
+						    <div class="col-sm-5">
+								Revenue
+							</div>
+							<div class="col-md-7">
+								{{ movie.revenue }}
+							</div>
+						</div>
+
+						<br><br>
+					  	<small class="text-muted ml-auto" style="margin-top: 25px;">
+					  	<a href="{{ movie.imdb_url  }}">
+					  	<span style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder; cursor: pointer; margin-top: 15px; text-decoration: none;">
+					  	 More details at IMDB 
+					  </span></a>
+					  </small>
+
+
+
+
+						</div>
+
+
+					</div>
+				</div>
+
+					
+
+				<!-- 	
+				<button href="#" data-toggle="tooltip" title="{{ cast.character }}!" >{{ cast.name }} </button> &nbsp &nbsp
+				 <br>
+				 -->
+				
+				</div>
+
+				
+				
+
+
+            </div>
+        </div>
+
+
+    </div>
+  </div>
+
+</main>
+
+
+
+{% endfor %}
+
+
+{% endif %}
+
+
+
+<!--
+<script>
+	//  to display cast automatically while pae loads
+	// Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen").click();
+</script>
+
+!-->
+
+
+{% endblock %}

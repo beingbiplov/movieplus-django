@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+	<nav class="navbar navbar-expand-sm navbar-light">
+  <a href="/" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar2">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Home <span class="sr-only">Home</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><b>Movies</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Tv Series</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Dashboard</a>
+            </li>
+            
+        </ul>
+        </div>
+    </nav>
+
+	<div class="container">
+		<div class="card" style="background:  #1e252b;color:#6c757d">
+			<article class="card-body mx-auto" style="max-width: 400px;">
+				<h4 class="card-title mt-3 text-center">Register Today</h4>
+				<p class="text-center">Register and enjoy your watch.</p>
+				{% if messages %}
+			          {% for message in messages %}
+
+			          <div class="alert alert-{{ message.tags }}">
+			              {{ message }}
+			          </div>
+
+			          {% endfor %}
+			          {% endif %}
+				
+     <form method="post">
+						{% csrf_token %}
+						{{ form|crispy }}
+						
+						<div class="form-group">
+				        <button type="submit" class="btn btn-primary btn-block" value="Save"> Submit  </button>
+				    </div> 
+					</form>
+					<div class="border-top pt-3">
+          <small class="text-muted">
+              Already Have An Accound? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+          </small>
+
+				</article>
+				
+      
+
+     </div> <!-- card.// -->
+
+	</div> </div>
+
+
+
+{% endblock content %}

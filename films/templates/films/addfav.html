@@ -1,0 +1,177 @@
+{% extends 'core/base.html' %}
+{% block content %}
+	 
+	 <nav class="navbar navbar-expand-sm navbar-light" style="margin-left: 7%; margin-right: 15%">
+ 		 <a href="{% url 'core:index' %}" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar2" >
+        <ul class="navbar-nav" >
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'core:index' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Home <span class="sr-only">Home</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><b>Movies</b></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Tv Series</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Dashboard</a>
+            </li>
+            
+        </ul>
+        
+        
+
+        <ul class="nav navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            	<li class="nav-item">
+                <a class="nav-link" href="{% url 'core:profiles' user.get_username %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Logout</a>
+            </li>
+          {% else %}
+            <li><a href="{% url 'login' %}"><button class="btn-primary" style="cursor:pointer;" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> Log In</button> </a></li>
+            <li><a href="{% url 'register' %}"><button class="btn-primary" style="cursor:pointer;" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> Signup</button> </a></li>
+          {% endif %}
+
+    </ul>
+    </div>
+</nav>
+
+
+	 <div style="margin-left: 20%; margin-right: 20%; text-align: center">
+		{% if messages %}
+          {% for message in messages %}
+
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+
+          {% endfor %}
+          {% endif %}
+	</div>
+	
+
+
+	 <form method="POST">
+       			 {% csrf_token %}
+
+		<div class="wrap">
+		   <div class="search">
+		      <input type="text" class="searchTerm" name="search" placeholder="Search movies">
+		      <button type="submit" class="searchButton">
+		        <i class="fa fa-search"></i>
+		     </button>
+		   </div>
+		</div>
+	</form>
+		
+	{% if total_fav %}
+	<div style="margin-left: 20%; margin-right: 30%; margin-top: 5%;  text-align: center; font-style: italic; color: white; font-weight: lighter;  ">
+		<p>You have added {{ total_fav }} movies to your Favorite. <br> You can add upto 3 movies </p>
+
+	</div>
+	{% endif %}
+
+	
+
+
+		<br><br>
+		{% if movies %}
+
+
+	<main role="main">
+   
+
+  <div class="album py-5 " style="background:  #1e252b">
+    <div class="container">
+      <div class="row">
+
+        {% for movie in movies %}
+
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+            <div class="card-body">
+              <p class="card-text" id="{{ movie.id}}"><a href="{% url 'core:details' movie.id  %}">{{ movie.title }}</a></p>
+              <div class="d-flex justify-content-between align-items-center">
+              	<small class="text-muted">Language: {{ movie.language }} </small> <br>
+              	<small class="text-muted">Release Date: {{ movie.release_date }} </small>
+              	<br>
+              	<div class="btn-group">
+                  <a type="button" href="{% url 'addfav' movie.id %}" class="btn btn-sm btn-outline-secondary">Favorite</a>
+                </div>
+              	
+                
+            
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+  </div>
+
+
+
+</main>
+
+{% else %}
+	
+		<div style="margin-left: 15%; margin-right: 15%; ">
+
+			<h6 style="text-transform: uppercase;"> Favorite films			    
+							<hr style="border-color: grey"></h6>
+
+						{% if fav_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in fav_films %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm" >
+						            <img class="bd-placeholder-img card-img-top " width="100%" height="400" style='cursor: pointer;' onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+						            
+						          </div>
+						    
+						              	<div class="btn-group">
+						                  <a type="button" href="{% url 'removefav' movie.id %}" class="btn btn-sm btn-outline-secondary">Remove</a> <br>
+						                </div>
+						            
+										             	    
+				              
+				            </div>
+				  
+
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+						
+
+			
+						{% else %}
+
+						<p >You don't have any movies in your Fav list. Search to add.</a> </p>
+						
+						{% endif %}
+
+					</div>
+
+
+
+	
+
+
+{% endif %}
+
+	
+{% endblock %}

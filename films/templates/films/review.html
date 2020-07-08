@@ -1,0 +1,133 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+	{% for movie in movie_data %}
+
+		<div class="hero-image" style="background-image: url({{ movie.backdrop_path }}); font-weight: bolder">
+	 	
+	 		<nav class="navbar navbar-expand-sm navbar-light" style="min-height: 50px;">
+ 		 <a href="{% url 'core:index' %}" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    
+		</nav>
+
+
+	 	<div class="hero-text">
+	 		<h1 style="background: rgba(0, 0, 0, 0.60); padding: 4px 8px; color: white; margin: 0; font-weight: bolder;"><p class="card-text" id="{{ movie.id}}">{{ movie.title }}</p></h1>
+
+				
+		</div>
+		  
+		</div>
+
+		<main role='main' style="background-color: black">
+	<div class="album py-5 " >
+    <div class="container" >
+      <div class="row" >
+      	
+        
+
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm" >
+            <img class="bd-placeholder-img card-img-top " width="100%" height="400" style='cursor: pointer;' onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"></img>
+            
+          </div>
+          <br>
+          {% if user.is_authenticated %}
+          <div class="container" >
+      		<div class="row" >
+      			<div class="col-sm-4">
+      				<center>
+      					{% if watched_this is True %}
+      						<a href="{% url 'removewatched' movie.id %}"  style="font-weight: lighter; text-decoration: none"> <i class="fa fa-eye" aria-hidden="true" style="font-size:37px; color: green" onMouseOver="this.style.color='lightgreen'" onMouseOut="this.style.color='green'" > </i>  <br><span style="color: white"> Watched</span> </a> 
+      					{% else %}
+				          	<a href="{% url 'addwatched' movie.id %}"  style="font-weight: lighter; text-decoration: none"> <i class="fa fa-eye" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'" > </i>  <br><span style="color: white"> Watch</span> </a> 
+      					{% endif %}
+
+          			</center>
+          		</div>
+          		<div class="col-sm-4">
+      				<center>
+      					{% if liked is True %}
+      						<a href="{% url 'removeliked' movie.id %}"> <i class="fa fa-heart" aria-hidden="true" style="font-size:37px; color: orange" onMouseOver="this.style.color='lightorange'" onMouseOut="this.style.color='orange'"> </i>  <br>  <span style="color: white"> Liked </span> </a> 
+      					{% else %}
+				          	<a href="{% url 'addliked' movie.id %}"> <i class="fa fa-heart" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> </i>  <br>  <span style="color: white"> Like </span> </a> 
+      					{% endif %}
+
+			    </center>
+			    </div>
+          		<div class="col-sm-4">
+      				<center>
+      					{% if watchlisted is True %}
+      						<a href="{% url 'removewatchlist' movie.id %}" > <i class="fa fa-clock" aria-hidden="true" style="font-size:37px; color: #0077b5" onMouseOver="this.style.color='lightblue'" onMouseOut="this.style.color='#0077b5'"> </i>  <br> <span style="color: white"> Watchlist </span> </a> 
+      					{% else %}
+
+				          	<a href="{% url 'addwatchlist' movie.id %}" > <i class="fa fa-clock" aria-hidden="true" style="font-size:37px; color: grey" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> </i>  <br> <span style="color: white"> Watchlist </span> </a> 
+				        {% endif %}
+          			</center>
+          		</div>
+          	</div>
+          </div>
+           <br>
+           {% endif %}
+           <a href="{{ movie.imdb_url}}">More details at  &nbsp <i class="fab fa-imdb" style="font-size:37px "></i> </a> <br> <br>
+          <a href="{{ video_details.trailer_url}}">Watch trailer at &nbsp <i class="fab fa-youtube" style="font-size:37px "></i> </a>  
+
+        </div>
+
+        <div class="col-md-8"  style="background-color: lightgrey">
+        	<div class="card-body">
+
+        		<div style="margin-left: 5%; margin-right: 5%; text-align: center">
+					{% if messages %}
+			          {% for message in messages %}
+
+			          <div class="alert alert-{{ message.tags }}">
+			              {{ message }}
+			          </div>
+
+			          {% endfor %}
+			          {% endif %}
+					</div>
+
+
+              <h3><p class="card-text" id="{{ movie.id}}" style="text-decoration: none; ">Add Review for<a href="{{ movie.movie_url }}"> {{ movie.title }}</a></p></h3> <br> 
+
+              <form method="POST" action="{% url 'addReview' movie.id %}">
+              	{% csrf_token %}
+
+              	<textarea class="form-control" rows="5" id="review" name="review" placeholder="Add review..."></textarea> <br>
+              	<p>Add Rating...</p>
+              	 <div class="form-check-inline">
+				  <label class="form-check-label">
+				    <input type="radio" class="form-check-input" name="optradio" value=1>1 <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i>
+				  </label>
+				</div>
+				<div class="form-check-inline">
+				  <label class="form-check-label">
+				    <input type="radio" class="form-check-input" name="optradio" value=2>2 <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i>
+				  </label>
+				</div>
+				<div class="form-check-inline ">
+				  <label class="form-check-label">
+				    <input type="radio" class="form-check-input" name="optradio" value=3>3 <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i>
+				  </label>
+				</div> 
+				<div class="form-check-inline ">
+				  <label class="form-check-label">
+				    <input type="radio" class="form-check-input" name="optradio" value=4>4 <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i>
+				  </label>
+				</div> 
+				<div class="form-check-inline ">
+				  <label class="form-check-label">
+				    <input type="radio" class="form-check-input" name="optradio" value=5>5 <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i>
+				  </label>
+				</div> <br><br>
+
+              	<button type="submit">Submit Review</button>
+              	
+              </form>
+
+
+	{% endfor %}
+{% endblock %}

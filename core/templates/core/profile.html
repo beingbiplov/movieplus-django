@@ -1,0 +1,390 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+		
+		<div style="background: #1e252b; height: 100%">
+	<nav class="navbar navbar-expand-sm navbar-light" style="margin-left: 7%; margin-right: 15%">
+ 		 <a href="{% url 'core:index' %}" class="navbar-brand">
+    <em style="color: purple; font-size: 30px;" onMouseOver="this.style.color='#0077b5'" onMouseOut="this.style.color='purple'"> MoviePlus</em></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar2" >
+        <ul class="navbar-nav" >
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'core:index' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Home <span class="sr-only">Home</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"><b>Movies</b></a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Dashboard</a>
+            </li>
+            
+        </ul>
+        
+        
+
+        <ul class="nav navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+            	<li class="nav-item">
+                <a class="nav-link" href="{% url 'core:profiles' user.get_username %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'">Logout</a>
+            </li>
+          {% else %}
+            <li><a href="{% url 'login' %}"><button class="btn-primary" style="cursor:pointer;" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> Log In</button> </a></li>
+            <li><a href="{% url 'register' %}"><button class="btn-primary" style="cursor:pointer;" style="color:grey;" onMouseOver="this.style.color='white'" onMouseOut="this.style.color='grey'"> Signup</button> </a></li>
+          {% endif %}
+
+    </ul>
+    </div>
+</nav>
+		
+		{% if userdata %}
+
+		<div class="container" >
+		<div class="card" style="background: #1e252b;">
+				<article class="card-body" style="margin-left: 7%; margin-right: 15%">
+					<h4 class="card-title mt-3 text-center"></h4>
+	<div class="content-section">
+	  <div class="media">
+	    <img class="rounded-circle account-img" src="{{ userdata.image.url }}" style="height: 150px; width: 150px;">
+	    <div class="media-body" style="margin-left: 5%">
+	    	<br>
+	      <h4 class="account-heading" style="color: white">{{ userdata.fullname }}</h4>
+	      <p class="text-secondary">@{{ userdata.user }}</p>
+
+	      {% if userinfo %}
+
+	      		{% if userinfo.bio %}
+	      			<p class="text-secondary" style="font-style: italic; display: inline-block;vertical-align: middle; font-size: 1rem; font-weight: lighter; line-height: 1.23076923; margin: .30769231rem 1rem .30769231rem 0;">{{ userinfo.bio }}</p> <br>
+	      		{% endif %}
+
+	      		<p class="text-secondary" style=" display: inline-block;vertical-align: middle; font-size: 1rem; font-weight: lighter; line-height: 1.23076923; margin: .30769231rem 1rem .30769231rem 0;">
+	      		{% if userinfo.location %}
+		      		<span style="margin-right: 25px"><i class="fa fa-map-pin" style=" "></i> &nbsp{{ userinfo.location }} </span>
+	 			{% endif %}
+	 			{% if userinfo.website %}
+	 				<span style="margin-right: 25px">
+	 				<i class="fa fa-mouse-pointer"></i> <a class='website' href="{{ userinfo.website }}" style="text-decoration: none; color:#6c757d; " onMouseOver="this.style.color='#c8d4e0'"
+        onMouseOut="this.style.color='#6c757d'">&nbsp{{ userinfo.website }} </a>
+        			</span>
+	 			{% endif %}
+	 			{% if userinfo.twitter_handle %}
+	 				<span style="margin-right: 25px">
+	 				<i class="fab fa-twitter"></i> <a class='website' href=" https://www.twitter.com/{{ userinfo.twitter_handle }}" style="text-decoration: none; color:#6c757d; " onMouseOver="this.style.color='#c8d4e0'"
+        onMouseOut="this.style.color='#6c757d'">&nbsp{{ userinfo.twitter_handle }} </a>
+        			</span>
+	 			{% endif %}
+	 			</p> <br>
+
+	      {% endif %}
+
+	      {% if edit is True %}
+	      <a href="{% url 'core:info-update' userinfo.pk %}" class="buttonsmall" rel="nofollow" style="background: #567; font-size: .84615385rem; padding: 7px 10px 6px; box-shadow: inset 0 1px 0 hsla(0,0%,100%,.2); border-radius: 3px; color: #c8d4e0; background: #567; cursor: pointer; margin: 0; line-height: 12px; border: none; display: inline-block; text-decoration: none; text-transform: uppercase; letter-spacing: .075em; font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400;">Edit Profile</a>
+	      {% endif %}
+	    </div>
+	  </div>
+	</div>
+</article>
+</div>
+		
+		{% if edit is True %}
+		<div style="margin-left: 20%; margin-right: 20%; text-align: center">
+		{% if messages %}
+          {% for message in messages %}
+
+          <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+          </div>
+
+          {% endfor %}
+          {% endif %}
+		</div>
+		{% endif %}
+
+ </div>
+ 		<div style="background: #1e252b; height: 100%">
+ 		<div style="margin-left: 15%; margin-right: 15%; ">
+
+ 		<div class="tab" style="    background-color: transparent;  border: 1px solid #24303c;  ">
+		  <button style="color: #000; cursor: pointer; margin: 0;  border: none; text-transform: uppercase;  font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400; margin-left: 17%;
+		  " class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile </button>
+
+		   <button style="color: #000; cursor: pointer; margin: 0;  border: none; text-transform: uppercase; font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400;
+		  " class="tablinks" onclick="openCity(event, 'Films')" id="defaultOpen">Films</button>
+		   <button style="color: #000; cursor: pointer; margin: 0;  border: none; text-transform: uppercase;  font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400;
+		  " class="tablinks" onclick="openCity(event, 'Watchlist')" id="defaultOpen">Watchlist</button>
+		   <button style="color: #000; cursor: pointer; margin: 0;  border: none; text-transform: uppercase;  font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400;
+		  " class="tablinks" onclick="openCity(event, 'Liked')" id="defaultOpen">Liked</button>
+
+		   <button style="color: #000; cursor: pointer; margin: 0;  border: none; text-transform: uppercase;  font-family: Graphik-Semibold-Web,sans-serif;font-weight: 400;
+		  " class="tablinks" onclick="openCity(event, 'Review')" id="defaultOpen">Review</button>
+
+		</div>
+			<div id="Profile" class="tabcontent" style="border: none;">
+						
+				<div class="row" style="margin-top: 5%; color: #c8d4e0">
+					<div class="col-sm-8">
+						<h6 style="text-transform: uppercase;"> Favorite films			    
+							{% if edit is True %}
+				        	<a href="{% url 'fav' %}"  style="margin-left: 60%; text-decoration: none; color:#6c757d; " onMouseOver="this.style.color='#c8d4e0'" onMouseOut="this.style.color='#6c757d'" > Update </a> </h6> 
+				        {% endif %} <hr style="border-color: grey">
+
+						{% if fav_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in fav_films %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm">
+						          	<a href="{% url 'core:details' movie.id  %}">
+						            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+						            
+										             	    
+				              
+				            </div>
+				        </div>
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+						
+
+
+						{% else %}
+
+						<p >No movie in Favorite list 
+						 {% if edit is True %} <a href="{% url 'fav' %}"> 
+						 Click Here to add </a> {% endif %}  </p>
+						
+						{% endif %}
+						<br >
+						<h6 style="text-transform: uppercase;"> Recently Watched</h6> <hr style="border-color: grey">
+
+						{% if watched_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in watched_films|slice:"0:3" %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm">
+						          	<a href="{% url 'core:details' movie.id  %}">
+						            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+						            
+										             	    
+				              
+				            </div>
+				        </div>
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+
+						
+
+
+						{% else %}
+
+						<p >No recently watched movies. {% if edit is True %} <a href="{% url 'core:index' %}"> 
+						 Click Here to add </a> {% endif %} </p>
+						{% endif %}
+					
+						<br >						
+					</div>
+				</div>
+			</div>
+
+			<div id="Films" class="tabcontent" style="border: none;">
+						
+				<div class="row" style="margin-top: 5%; color: #c8d4e0">
+					<div class="col-sm-8">
+						<h6 style="text-transform: uppercase;"> Films</h6> <hr style="border-color: grey">
+						{% if watched_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in watched_films %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm">
+						          	<a href="{% url 'core:details' movie.id  %}">
+						            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+						            
+										             	    
+				              
+				            </div>
+				        </div>
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+						
+
+
+						{% else %}
+
+						<p >No recently watched movies. {% if edit is True %} <a href="{% url 'core:index' %}"> 
+						 Click Here to add </a> {% endif %} </p>
+						
+						{% endif %}
+						<br >
+						
+					
+						<br >						
+					</div>
+				</div>
+			</div>
+
+			<div id="Watchlist" class="tabcontent" style="border: none;">
+						
+				<div class="row" style="margin-top: 5%; color: #c8d4e0">
+					<div class="col-sm-8">
+						<h6 style="text-transform: uppercase;"> Your Watchlist</h6> <hr style="border-color: grey">
+						{% if watchlist_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in watchlist_films %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm">
+						          	<a href="{% url 'core:details' movie.id  %}">
+						            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+						            
+										             	    
+				              
+				            </div>
+				        </div>
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+						
+
+
+						{% else %}
+
+						<p >No movies currently in the Watchlist.
+						{% endif %}
+						<br >
+						
+					
+						<br >						
+					</div>
+				</div>
+			</div>
+
+			<div id="Liked" class="tabcontent" style="border: none;">
+						
+				<div class="row" style="margin-top: 5%; color: #c8d4e0">
+					<div class="col-sm-8">
+						<h6 style="text-transform: uppercase;"> Liked Movies</h6> <hr style="border-color: grey">
+						{% if liked_films %}
+
+							<div class="container" >
+						      <div class="row" >
+						      		{% for movie in liked_films %}
+						        <div class="col-md-4">
+						          <div class="card mb-4 shadow-sm">
+						          	<a href="{% url 'core:details' movie.id  %}">
+						            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ movie.poster_path }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail" onMouseOver="this.style.border='1px solid #00ff00'" onMouseOut="this.style.border=''" ></img></a>
+						            
+										             	    
+				              
+				            </div>
+				        </div>
+				      
+				        {% endfor %} 
+				        
+				    </div>
+				</div>
+						
+
+
+						{% else %}
+
+						<p >No movies liked yet.
+						{% endif %}
+						<br >
+						
+					
+						<br >						
+					</div>
+				</div>
+			</div>
+
+			<div id="Review" class="tabcontent" style="border: none;">
+						
+				<div class="row" style="margin-top: 5%; color: #c8d4e0">
+					<div class="col-sm-8">
+						<h6 style="text-transform: uppercase;"> Recently Reviewed</h6> <hr style="border-color: grey">
+						{% if reviewed_movies %}
+
+							<div class="container" >
+								{% for movie in reviewed_movies %}
+						      <div class="row" >
+						      
+						        <div class="col-md">
+						        	<h6 style="color:#6c757d">Review of {{ movie.title }} </h6><br>
+						        	<span>{{ movie.rating }} <i class="fa fa-star" aria-hidden="true" style="font-size:17px; color: #fbca04"> </i></span> <br>
+						        	<span><i>{{ movie.review }}</i></span> <br>
+						        	<small class="text-muted ml-auto" style="color: #6c757d">{{ movie.review_date }}</small>
+						        	<hr style="border-color: grey">
+						          
+				        </div>
+				      </div>
+				        {% endfor %} 
+				        
+				    
+				</div>
+						
+
+
+						{% else %}
+
+						<p >No recently watched movies. {% if edit is True %} <a href="{% url 'core:index' %}"> 
+						 Click Here to add </a> {% endif %} </p>
+						
+						{% endif %}
+						<br >
+						
+					
+						<br >						
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+		</div>
+
+			
+
+			</div>
+
+
+		</div>
+		</div>
+		{% endif %}
+
+
+</div>
+
+<script>
+	//  to display cast automatically while pae loads
+	// Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen").click();
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  
+  <div style="background: #1e252b; height: 100%"> 
+   <div class="container" style="background: #1e252b;">
+    <div class="card" style="background: #1e252b; color: white">
+      <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 text-center">Update your info</h4>
+        
+     <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" value="Save"> Update  </button>
+            </div> 
+          </form>
+          <div class="border-top pt-3">
+         
+        </div>
+       <p class="divider-text">
+               <center> <span class="">OR</span> 
+            </p>
+          
+          <a href="{% url 'profile' %}">Update basic information </a></center>
+
+        </article>
+      </div>
+    </div>
+        
+      
+
+
+
+
+
+{% endblock content %}
