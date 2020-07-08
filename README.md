@@ -13,3 +13,20 @@ Some features of this application are:
 - Like a movie.
 - and much more....
 
+## Screenshots
+
+<div align="center">
+  <br>
+  <br>
+  <img src="images/Screenshot1.png" alt="MoviePlus" width="55%">
+  <br>
+  <br>
+  <img src="images/Screenshot2.png" alt="MoviePlus" width="55%">
+  <br>
+  <br>
+  <img src="images/Screenshot3.png" alt="MoviePlus" width="55%">
+
+  
+</div>
+
+
