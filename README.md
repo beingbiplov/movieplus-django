@@ -1,6 +1,8 @@
 # MoviePlus-django
 Movieplus is a django application that lets you create a profile and keep track of all your movies from one place.
 
+A lite Django-React version of this application can be found [here](https://github.com/beingbiplov/MoviePlus)
+
 Some features of this application are:
 - Search any movies
 - View movie details.(cast, overview, crew etc)
@@ -10,3 +12,4 @@ Some features of this application are:
 - Add movies to watched.
 - Like a movie.
 - and much more....
+
